@@ -1,0 +1,408 @@
+<!doctype html>
+<meta charset=utf-8>
+<html>
+<head>
+</head>
+<body>
+<div id="main">
+  <div id="player1" style="width: 18%; float: left;">
+    <p>你的偏好区</p> 
+    <p>你的得分： <span id="score1">0</span></p>
+    <p><button id="prev1" onclick="onPrev1Clicked();">查看上一张</button><button id="next1" onclick="onNext1Clicked();">查看下一张</button><button id="abandon" onclick="onAbandonClicked();">丢弃这张</button><button id="confirm" onclick="onConfirmClicked();">我选好了</button></p>
+    <img id="imgPref1" style="width: 90%;" src="1.png" onclick="onImgPref1Clicked()">
+    <p>你的偏好图标统计</p>
+    <p>红黄黑白绿：<span id="color1">0/0/0/0/0</span></p>
+    <p>甜酸辣咸：<span id="flavor1">0/0/0/0</span></p>
+    <p>冷热：<span id="temperature1">0/0</span></p>
+  </div>
+  <div id="menu" style="width: 54%; float: left;">
+    <p>菜单区 剩余卡牌数：<span id="remaining">18</span><button id="ruleButton" onclick="onRuleButtonClicked()">规则介绍</button><button id="opButton" onclick="onOpButtonClicked()">操作说明</button><p>
+    <p id="menuLine2">请在左侧选择你的偏好</p>
+    <p><span id="bulletin">你可以删去1~4张牌。用尽量少的牌覆盖尽可能多种的图标</span></p>
+    <img id="menu1" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(1)">
+    <img id="menu2" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(2)">
+    <img id="menu3" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(3)">
+  </div>
+  <div id="player2" style="width: 18%; float: left;">
+    <p>电脑偏好区</p>
+    <p>电脑得分： <span id="score2">0</span></p>
+    <p><button id="prev2" onclick="onPrev2Clicked();">查看上一张</button><button id="next2" onclick="onNext2Clicked();">查看下一张</button></p>
+    <img id="imgPref2" style="width: 90%;" src="0.png">
+    <p>你点菜的图标-得分换算</p>
+    <p>红黄黑白绿：<span id="color2">0/0/0/0/0</span></p>
+    <p>甜酸辣咸：<span id="flavor2">0/0/0/0</span></p>
+    <p>冷热：<span id="temperature2">0/0</span></p>
+  </div>
+</div>
+<div id="rule" style="position: fixed; align: center; z-index: 100%; display: block;" onclick="onRuleClicked();">
+  <img src="back.png">
+</div>
+<div id="operation" style="position: fixed; align: center; z-index: 100%; display: none;" onclick="onOperationClicked();">
+  <img src="24.png">
+</div>
+</body>
+<script>
+var nCards = 28;
+var allCards = [0,
+1311, 2211, 3312, 4111, 5121, 6332, 7511,
+8412, 9932, 10521, 11311, 12111, 13421, 14221,
+15121, 16211, 17212, 18222, 19412, 20242, 21132,
+22211, 23342, 24412, 25131, 26342, 27142, 28132
+];
+var allNames = ["",
+"德芙巧克力", "芒椰西米露", "生椰拿铁", "夏威夷风光",
+"蔓越莓果汁", "深夜烤串", "不二家棒棒糖", "玉树豆浆",
+"清芬香锅", "亲提葡萄", "紫荆甜甜圈", "桃李西瓜",
+"无糖雪碧", "芒橙百香四季春", "森林玫果", "蜜桃乌龙茶",
+"岩烧乳酪", "锅包肉", "小笼汤包", "金牌锅贴",
+"川味纸包鱼", "焦糖豆花", "响油鳝糊", "老面馒头",
+"凉拌海蜇丝", "东北酱骨头", "广式烤乳鸽", "生蚝米线"
+];
+var score = [0,0]; 
+var countX=[[0,0,0,0,0,0],[0,0,0,0,0,0]];
+var countY=[[0,0,0,0,0],[0,0,0,0,0]];
+var countZ=[[0,0,0],[0,0,0]];
+var prefCards=[[0,0,0,0,0],[0,0,0,0,0]];
+var prefCount = [0,0];
+var deckCards = allCards;
+var deckCount=nCards;
+var menuCards = [0,0,0];
+var bulletin = "welcome";
+var gameStage = 1;
+var lastCOMOp = 0;
+var lastChosenPage = -1;
+var currentPage1 = 0;
+var currentPage2 = 0;
+var allowPlayerOp = 0;
+
+function getID(card){
+	return Math.floor(card/1000);
+}
+
+function getName(card){
+	return allNames[getID(card)];
+}
+
+function showCount(p){
+	document.getElementById("color"+(p+1)).innerHTML=countX[p].join('/').substring(2);
+	document.getElementById("flavor"+(p+1)).innerHTML=countY[p].join('/').substring(2);
+	document.getElementById("temperature"+(p+1)).innerHTML=countZ[p].join('/').substring(2);
+}
+
+function updateXYZ(card, player, delta){
+	var x = Math.floor(card/100)%10;
+	var y = Math.floor(card/10)%10;
+	var z = card%10;
+	if(x==9){
+		for(var i=1;i<=5;i++){
+			countX[player][i] += delta;
+		}
+	} else {
+		countX[player][x] += delta;
+	}
+	countY[player][y] += delta;
+	countZ[player][z] += delta;
+	showCount(player);
+}
+
+function updateScore(card, p){
+	var x = Math.floor(card/100)%10;
+	var y = Math.floor(card/10)%10;
+	var z = card%10;
+	var oldScore = score[p];
+	if(x==9){
+		for(var i=1;i<=5;i++){
+			score[p] += countX[1-p][i];
+		}
+	} else {
+		score[p] += countX[1-p][x];
+	}
+	score[p] += countY[1-p][y];
+	score[p] += countZ[1-p][z];
+	if(p==0){
+		bulletin += "，得分：";
+	} else {
+		bulletin += "，得分：";
+	}
+	bulletin += oldScore + "(+" + (score[p]-oldScore) + ") -> " + score[p];
+	document.getElementById("bulletin").innerHTML = bulletin;
+	document.getElementById("score1").innerHTML = score[0];
+	document.getElementById("score2").innerHTML = score[1];
+}
+
+function endGame(){
+	msg = "终局得分: " + score[0] +" - " + score[1];
+	if (score[0] > score[1]){
+		msg+="\n恭喜你取得胜利！";
+	}
+	alert(msg);
+	gameStage = 3;
+	window.location.reload();
+}
+
+function genDeck(){
+	for(var i=0; i<nCards; i++){
+		deckCards[i] = allCards[i+1];
+	}
+	var nSwaps = nCards*nCards;
+	while(nSwaps--){
+		var x=Math.floor(Math.random()*nCards);
+		var y=Math.floor(Math.random()*nCards);
+		var tmp=deckCards[x];
+		deckCards[x]=deckCards[y];
+		deckCards[y]=tmp;
+	}
+}
+
+function refreshMenu(){
+	if(deckCount < 3){
+		endGame();
+	} else {
+		menuCards[0] = deckCards[deckCount-1];
+		menuCards[1] = deckCards[deckCount-2];
+		menuCards[2] = deckCards[deckCount-3];
+		document.getElementById("menu1").src=getID(menuCards[0])+".png";
+		document.getElementById("menu2").src=getID(menuCards[1])+".png";
+		document.getElementById("menu3").src=getID(menuCards[2])+".png";
+		document.getElementById("menu1").style.opacity=1;
+		document.getElementById("menu2").style.opacity=1;	
+		document.getElementById("menu3").style.opacity=1;	
+		deckCount -= 3;
+		document.getElementById("remaining").innerHTML = deckCount;
+	}
+}
+
+function choosePreferenceCOM(){
+	for(var i=1;i<=4;i++){
+		prefCards[1][prefCount[1]++] = deckCards[deckCount-i];
+		updateXYZ(deckCards[deckCount-i], 1, 1);
+	}
+	deckCount -= 5;
+	document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+}
+
+function getOperationCOM(op1){
+	var op=0;
+	if(op1==1){
+		op=2;
+	} else {
+		op=1;
+	}
+	var bestScore=0;
+	var bestOp = op;
+	for(var o=op;o<=3;o++){
+		if(o==op1){
+			continue;
+		}
+		var card = menuCards[o-1];
+		var score = 0;
+		if(!((Math.floor(card/1000)<900 && !countX[1][Math.floor(card/100)%10]) || !countY[1][Math.floor(card/10)%10] || !countZ[1][card%10])){
+			var x = Math.floor(card/100)%10;
+			var y = Math.floor(card/10)%10;
+			var z = card%10;
+			if(x==9){
+				for(var i=1;i<=5;i++){
+					score += countX[0][i];
+				}
+			} else {
+				score += countX[0][x];
+			}
+			score += countY[0][y];
+			score += countZ[0][z];
+			if(score>bestScore){
+				bestScore=score;
+				bestOp=o;
+			}
+		}
+	}
+	op=bestOp;
+	var card = menuCards[op%10-1];
+	if((Math.floor(card/1000)<900 && !countX[1][Math.floor(card/100)%10]) || !countY[1][Math.floor(card/10)%10] || !countZ[1][card%10]){
+		op += 10;
+	}
+	return op;
+} 
+
+function handleOp(op, p){
+	if(p==0){
+		bulletin="你";
+	} else {
+		bulletin="电脑";
+	}
+	if(op<10){
+			order=menuCards[op%10-1];
+			bulletin +=  "点了一道【" + getName(order) + "】";
+			updateScore(order, p);
+		} else {
+			var oldp = prefCards[p][Math.floor(op/10)-1];
+			var newp = menuCards[op%10-1];
+			if(oldp==0){
+				bulletin += "添加了偏好【" + getName(newp) + "】";
+				prefCount[p]++;
+			} else {
+				bulletin += "更换了偏好：【" + getName(oldp) + "】 -> 【" + getName(newp) + "】";
+				updateXYZ(oldp, p, -1);
+			}
+			prefCards[p][Math.floor(op/10)-1] = newp;
+			updateXYZ(newp, p, 1);
+			document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+			document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+			showCount(p);
+		}
+	document.getElementById("menu" + (op%10)).style.opacity="0.5";
+	document.getElementById("bulletin").innerHTML = bulletin;
+}
+
+function dealPlayerHand(){
+	for(var i=1;i<=5;i++){
+		prefCards[0][prefCount[0]++] = deckCards[deckCount-i];
+		updateXYZ(deckCards[deckCount-i], 0, 1);
+	}
+	deckCount -= 5;
+	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+}
+
+function setup(){
+	genDeck();
+	dealPlayerHand();
+}
+
+function onPrev1Clicked(){
+	if(currentPage1 == 0){
+		alert("已经是第一张！");
+	} else {
+		currentPage1--;
+		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+	}
+}
+
+function onNext1Clicked(){
+	if(currentPage1 == (gameStage==1?(prefCount[0]-1):((4<prefCount[0])?4:prefCount[0]))){
+		alert("已经是最后一张！");
+	} else {
+		currentPage1++;
+		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+	}
+}
+
+function onPrev2Clicked(){
+	if(currentPage2 == 0){
+		alert("已经是第一张！");
+	} else {
+		currentPage2--;
+		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+	}
+}
+
+function onNext2Clicked(){
+	if(currentPage2 == prefCount[1]-1){
+		alert("已经是最后一张！");
+	} else {
+		currentPage2++;
+		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+	}
+}
+
+function onAbandonClicked(){
+	if(prefCount[0]==1){
+		alert('这是最后一张偏好牌了，不能删除！')
+	} else {
+		updateXYZ(prefCards[0][currentPage1], 0, -1);
+		prefCards[0][currentPage1] = 0;
+		for(var i=currentPage1+1; i<5; i++){
+			prefCards[0][i-1]=prefCards[0][i];
+		}
+		prefCards[0][4]=0;
+		prefCount[0]--;
+	}
+	if(currentPage1>=prefCount[0]){
+		currentPage1--;
+	}
+	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+}
+
+function onConfirmClicked(){
+	document.getElementById("abandon").style="display: none;";
+	document.getElementById("confirm").style="display: none;";
+	choosePreferenceCOM();
+	gameStage = 2;
+	refreshMenu();
+	document.getElementById("menuLine2").innerHTML="依次点击偏好区和菜单区的卡牌可以交换它们。如果点错，点此<button id=\"cancel\" onclick=\"onCancelClicked()\">取消</button>";
+	document.getElementById("bulletin").innerHTML="直接点击菜单区的卡牌可以得分（它的图标必须都在你的偏好区中）";
+	allowPlayerOp = 1;
+}
+
+function onMenuClicked(choice){
+	if(allowPlayerOp==0){
+		return;
+	}
+	if(choice==lastCOMOp){
+		alert("电脑已经选过这张牌了");
+		return;
+	}
+	var op = (lastChosenPage+1)*10+choice;	
+	var card = menuCards[op%10-1];
+	var x = Math.floor(card/100)%10;
+	var y = Math.floor(card/10)%10;
+	var z = card%10;
+	if(op<10 && ((x!=9&&!countX[0][x]) || !countY[0][y] || !countZ[0][z])){
+		msg = "你的偏好中缺少相应的 ";
+		if(!countX[0][x]) msg += "颜色标记(上) ";
+		if(!countY[0][y]) msg += "口味标记(中) ";
+		if(!countZ[0][z]) msg += "温度标记(下) ";
+		alert(msg);
+		return;
+	}
+	handleOp(op, 0);
+	lastChosenPage = -1;
+	lastCOMOp = 0;
+	allowPlayerOp--;
+	function stage3(){
+		var op2 = getOperationCOM(0);
+		handleOp(op2, 1);
+		lastCOMOp = op2%10;
+		allowPlayerOp = 2;
+	}
+	function stage2(){
+		setTimeout(stage3, 500);
+		refreshMenu();
+	}
+	function stage1(){
+		setTimeout(stage2, 500);
+		var op2 = getOperationCOM(op%10);
+		handleOp(op2, 1);
+	}
+	if(allowPlayerOp==0){
+		setTimeout(stage1, 500);
+	} else {
+		setTimeout(refreshMenu, 500);
+	}
+}
+
+function onImgPref1Clicked(){
+	if(gameStage==2){
+		lastChosenPage = currentPage1;
+	}
+}
+
+function onCancelClicked(){
+	lastChosenPage =  -1;
+}
+
+function onRuleClicked(){
+  document.getElementById("rule").style.display="none";
+}
+function onOperationClicked(){
+  document.getElementById("operation").style.display="none";
+}
+function onRuleButtonClicked(){
+  document.getElementById("rule").style.display="block";
+}
+function onOpButtonClicked(){
+  document.getElementById("operation").style.display="block";
+}
+
+setup();
+
+</script>
+</html>

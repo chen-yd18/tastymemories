@@ -9,7 +9,7 @@
     <p>你的偏好区</p> 
     <p>你的得分： <span id="score1">0</span></p>
     <p><button id="prev1" onclick="onPrev1Clicked();">查看上一张</button><button id="next1" onclick="onNext1Clicked();">查看下一张</button><button id="abandon" onclick="onAbandonClicked();">丢弃这张</button><button id="confirm" onclick="onConfirmClicked();">我选好了</button></p>
-    <img id="imgPref1" style="width: 90%;" src="1.png" onclick="onImgPref1Clicked()">
+    <img id="imgPref1" style="width: 90%;" src="1.PNG" onclick="onImgPref1Clicked()">
     <p>你的偏好图标统计</p>
     <p>红黄黑白绿：<span id="color1">0/0/0/0/0</span></p>
     <p>甜酸辣咸：<span id="flavor1">0/0/0/0</span></p>
@@ -19,15 +19,15 @@
     <p>菜单区 剩余卡牌数：<span id="remaining">18</span><button id="ruleButton" onclick="onRuleButtonClicked()">规则介绍</button><button id="opButton" onclick="onOpButtonClicked()">操作说明</button><p>
     <p id="menuLine2">请在左侧选择你的偏好</p>
     <p><span id="bulletin">你可以删去1~4张牌。用尽量少的牌覆盖尽可能多种的图标</span></p>
-    <img id="menu1" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(1)">
-    <img id="menu2" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(2)">
-    <img id="menu3" style="width: 30%; float: left; opacity: 1;" src="0.png" onclick="onMenuClicked(3)">
+    <img id="menu1" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(1)">
+    <img id="menu2" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(2)">
+    <img id="menu3" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(3)">
   </div>
   <div id="player2" style="width: 18%; float: left;">
     <p>电脑偏好区</p>
     <p>电脑得分： <span id="score2">0</span></p>
     <p><button id="prev2" onclick="onPrev2Clicked();">查看上一张</button><button id="next2" onclick="onNext2Clicked();">查看下一张</button></p>
-    <img id="imgPref2" style="width: 90%;" src="0.png">
+    <img id="imgPref2" style="width: 90%;" src="0.PNG">
     <p>你点菜的图标-得分换算</p>
     <p>红黄黑白绿：<span id="color2">0/0/0/0/0</span></p>
     <p>甜酸辣咸：<span id="flavor2">0/0/0/0</span></p>
@@ -35,10 +35,10 @@
   </div>
 </div>
 <div id="rule" style="position: fixed; align: center; z-index: 100%; display: block;" onclick="onRuleClicked();">
-  <img src="back.png">
+  <img src="back.PNG">
 </div>
 <div id="operation" style="position: fixed; align: center; z-index: 100%; display: none;" onclick="onOperationClicked();">
-  <img src="24.png">
+  <img src="24.PNG">
 </div>
 </body>
 <script>
@@ -161,9 +161,9 @@ function refreshMenu(){
 		menuCards[0] = deckCards[deckCount-1];
 		menuCards[1] = deckCards[deckCount-2];
 		menuCards[2] = deckCards[deckCount-3];
-		document.getElementById("menu1").src=getID(menuCards[0])+".png";
-		document.getElementById("menu2").src=getID(menuCards[1])+".png";
-		document.getElementById("menu3").src=getID(menuCards[2])+".png";
+		document.getElementById("menu1").src=getID(menuCards[0])+".PNG";
+		document.getElementById("menu2").src=getID(menuCards[1])+".PNG";
+		document.getElementById("menu3").src=getID(menuCards[2])+".PNG";
 		document.getElementById("menu1").style.opacity=1;
 		document.getElementById("menu2").style.opacity=1;	
 		document.getElementById("menu3").style.opacity=1;	
@@ -178,7 +178,7 @@ function choosePreferenceCOM(){
 		updateXYZ(deckCards[deckCount-i], 1, 1);
 	}
 	deckCount -= 5;
-	document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+	document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
 }
 
 function getOperationCOM(op1){
@@ -245,8 +245,8 @@ function handleOp(op, p){
 			}
 			prefCards[p][Math.floor(op/10)-1] = newp;
 			updateXYZ(newp, p, 1);
-			document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
-			document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+			document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
+			document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
 			showCount(p);
 		}
 	document.getElementById("menu" + (op%10)).style.opacity="0.5";
@@ -259,7 +259,7 @@ function dealPlayerHand(){
 		updateXYZ(deckCards[deckCount-i], 0, 1);
 	}
 	deckCount -= 5;
-	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
 }
 
 function setup(){
@@ -272,7 +272,7 @@ function onPrev1Clicked(){
 		alert("已经是第一张！");
 	} else {
 		currentPage1--;
-		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
 	}
 }
 
@@ -281,7 +281,7 @@ function onNext1Clicked(){
 		alert("已经是最后一张！");
 	} else {
 		currentPage1++;
-		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
 	}
 }
 
@@ -290,7 +290,7 @@ function onPrev2Clicked(){
 		alert("已经是第一张！");
 	} else {
 		currentPage2--;
-		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
 	}
 }
 
@@ -299,7 +299,7 @@ function onNext2Clicked(){
 		alert("已经是最后一张！");
 	} else {
 		currentPage2++;
-		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".png";
+		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
 	}
 }
 
@@ -318,7 +318,7 @@ function onAbandonClicked(){
 	if(currentPage1>=prefCount[0]){
 		currentPage1--;
 	}
-	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".png";
+	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
 }
 
 function onConfirmClicked(){

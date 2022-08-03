@@ -347,8 +347,8 @@ function onMenuClicked(choice){
 	var z = card%10;
 	if(op<10 && ((x!=9&&!countX[0][x]) || !countY[0][y] || !countZ[0][z])){
 		msg = "你的偏好中缺少相应的 ";
-		if(!countX[0][x]) msg += "颜色标记";
-		if(!countY[0][y]) msg += "口味标记";
+		if(!countX[0][x]) msg += "颜色标记 ";
+		if(!countY[0][y]) msg += "口味标记 ";
 		if(!countZ[0][z]) msg += "温度标记 ";
 		alert(msg);
 		return;

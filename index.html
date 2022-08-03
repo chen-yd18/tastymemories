@@ -16,9 +16,9 @@
     <p>冷热：<span id="temperature1">0/0</span></p>
   </div>
   <div id="menu" style="width: 54%; float: left;">
-    <p>菜单区 剩余卡牌数：<span id="remaining">18</span><button id="ruleButton" onclick="onRuleButtonClicked()">规则介绍</button><button id="opButton" onclick="onOpButtonClicked()">操作说明</button><p>
-    <p id="menuLine2">请在左侧选择你的偏好</p>
-    <p><span id="bulletin">你可以删去1~4张牌。用尽量少的牌覆盖尽可能多种的图标</span></p>
+    <p>菜单区 剩余卡牌数：<span id="remaining">18</span><button id="ruleButton" onclick="onRuleButtonClicked()">规则介绍</button><button id="opButton" onclick="onOpButtonClicked()">关于</button><p>
+    <p id="menuLine2">请在左侧选择你的偏好，用“查看上（下）一张”翻页</p>
+    <p><span id="bulletin">你可以用“丢弃这张”删去0~4张牌，然后点击“我选好了”进入点菜阶段</span></p>
     <img id="menu1" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(1)">
     <img id="menu2" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(2)">
     <img id="menu3" style="width: 30%; float: left; opacity: 1;" src="0.PNG" onclick="onMenuClicked(3)">
@@ -38,7 +38,7 @@
   <img src="back.PNG">
 </div>
 <div id="operation" style="position: fixed; align: center; z-index: 100%; display: none;" onclick="onOperationClicked();">
-  <img src="24.PNG">
+  <img src="about.PNG">
 </div>
 </body>
 <script>
@@ -327,7 +327,7 @@ function onConfirmClicked(){
 	choosePreferenceCOM();
 	gameStage = 2;
 	refreshMenu();
-	document.getElementById("menuLine2").innerHTML="依次点击偏好区和菜单区的卡牌可以交换它们。如果点错，点此<button id=\"cancel\" onclick=\"onCancelClicked()\">取消</button>";
+	document.getElementById("menuLine2").innerHTML="依次点击偏好区位置和菜单区卡牌可以覆盖偏好。如果点错，点此<button id=\"cancel\" onclick=\"onCancelClicked()\">取消</button>";
 	document.getElementById("bulletin").innerHTML="直接点击菜单区的卡牌可以得分（它的图标必须都在你的偏好区中）";
 	allowPlayerOp = 1;
 }
@@ -347,9 +347,9 @@ function onMenuClicked(choice){
 	var z = card%10;
 	if(op<10 && ((x!=9&&!countX[0][x]) || !countY[0][y] || !countZ[0][z])){
 		msg = "你的偏好中缺少相应的 ";
-		if(!countX[0][x]) msg += "颜色标记(上) ";
-		if(!countY[0][y]) msg += "口味标记(中) ";
-		if(!countZ[0][z]) msg += "温度标记(下) ";
+		if(!countX[0][x]) msg += "颜色标记";
+		if(!countY[0][y]) msg += "口味标记";
+		if(!countZ[0][z]) msg += "温度标记 ";
 		alert(msg);
 		return;
 	}

@@ -9,7 +9,7 @@
     <p>你的偏好区</p> 
     <p>你的得分： <span id="score1">0</span></p>
     <p><button id="prev1" onclick="onPrev1Clicked();">查看上一张</button><button id="next1" onclick="onNext1Clicked();">查看下一张</button><button id="abandon" onclick="onAbandonClicked();">丢弃这张</button><button id="confirm" onclick="onConfirmClicked();">我选好了</button></p>
-    <img id="imgPref1" style="width: 90%;" src="1.PNG" onclick="onImgPref1Clicked()">
+    <img id="imgPref1" style="width: 90%;" src="0.PNG" onclick="onImgPref1Clicked()">
     <p>你的偏好图标统计</p>
     <p>红黄黑白绿：<span id="color1">0/0/0/0/0</span></p>
     <p>甜酸辣咸：<span id="flavor1">0/0/0/0</span></p>
@@ -35,10 +35,10 @@
   </div>
 </div>
 <div id="rule" style="position: fixed; width: 100%; z-index: 100%; display: block;" onclick="onRuleClicked();">
-  <img src="back.PNG" style="width: 60%;">
+  <img src="https://s2.loli.net/2022/08/03/4OpP8yJrmB3hgqX.png" style="width: 60%;">
 </div>
 <div id="operation" style="position: fixed; width: 100%; z-index: 100%; display: none;" onclick="onOperationClicked();">
-  <img src="about.PNG"  style="width: 60%;">
+  <img src="https://s2.loli.net/2022/08/03/P6eM4tAgvjXEGkQ.png"  style="width: 60%;">
 </div>
 </body>
 <script>
@@ -81,6 +81,38 @@ function getID(card){
 
 function getName(card){
 	return allNames[getID(card)];
+}
+
+function getPNG(id){
+if(id==0) return "https://s2.loli.net/2022/08/03/KzapymdZYhJ6RcW.png";
+if(id==1) return "https://s2.loli.net/2022/08/03/UKcuSe5C1QVAJIP.png";
+if(id==2) return "https://s2.loli.net/2022/08/03/Cop4cwh1EnKbZ9J.png";
+if(id==3) return "https://s2.loli.net/2022/08/03/hdJ75mbk2wTG4xH.png";
+if(id==4) return "https://s2.loli.net/2022/08/03/fBkcSQtgrmNWbyT.png";
+if(id==5) return "https://s2.loli.net/2022/08/03/xpDCBTMEU3KrXdh.png";
+if(id==6) return "https://s2.loli.net/2022/08/03/9dn1oUDINgGr5l3.png";
+if(id==7) return "https://s2.loli.net/2022/08/03/u1j8Eo7wfHCGgsr.png";
+if(id==8) return "https://s2.loli.net/2022/08/03/T2AmHUG7az1cjtu.png";
+if(id==9) return "https://s2.loli.net/2022/08/03/jN8irs3VKUG4Rcm.png";
+if(id==10) return "https://s2.loli.net/2022/08/03/J3DNgAvcRY6LOsy.png";
+if(id==11) return "https://s2.loli.net/2022/08/03/rXkAIP75SUJKQ2c.png";
+if(id==12) return "https://s2.loli.net/2022/08/03/p5ZYijgfGLod6sA.png";
+if(id==13) return "https://s2.loli.net/2022/08/03/1w4chLzFTfKZ6xM.png";
+if(id==14) return "https://s2.loli.net/2022/08/03/vVlEizIohbcMOQF.png";
+if(id==15) return "https://s2.loli.net/2022/08/03/mqaVBeIXpdnl6b1.png";
+if(id==16) return "https://s2.loli.net/2022/08/03/cTMmD2i48l7n1JW.png";
+if(id==17) return "https://s2.loli.net/2022/08/03/lzHhRxGPdwtQ9my.png";
+if(id==18) return "https://s2.loli.net/2022/08/03/eQ5ZNKByhzAFnuS.png";
+if(id==19) return "https://s2.loli.net/2022/08/03/uUEzSove4MQ6mTX.png";
+if(id==20) return "https://s2.loli.net/2022/08/03/d2ZCHlS38IGLzXs.png";
+if(id==21) return "https://s2.loli.net/2022/08/03/PXaZOWzNu1qGJYV.png";
+if(id==22) return "https://s2.loli.net/2022/08/03/EYSTzHq6t59GnKX.png";
+if(id==23) return "https://s2.loli.net/2022/08/03/j1wUGW3uvEOxALh.png";
+if(id==24) return "https://s2.loli.net/2022/08/03/UBzdh5QNfZvKYFL.png";
+if(id==25) return "https://s2.loli.net/2022/08/03/Nb6WyGfD1mBkI2K.png";
+if(id==26) return "https://s2.loli.net/2022/08/03/YxomMK2fP3lSDtO.png";
+if(id==27) return "https://s2.loli.net/2022/08/03/pO73xmlTjf4MGSN.png";
+if(id==28) return "https://s2.loli.net/2022/08/03/bczTQGgpFIOB2du.png";
 }
 
 function showCount(p){
@@ -161,9 +193,9 @@ function refreshMenu(){
 		menuCards[0] = deckCards[deckCount-1];
 		menuCards[1] = deckCards[deckCount-2];
 		menuCards[2] = deckCards[deckCount-3];
-		document.getElementById("menu1").src=getID(menuCards[0])+".PNG";
-		document.getElementById("menu2").src=getID(menuCards[1])+".PNG";
-		document.getElementById("menu3").src=getID(menuCards[2])+".PNG";
+		document.getElementById("menu1").src=getPNG(getID(menuCards[0]));
+		document.getElementById("menu2").src=getPNG(getID(menuCards[1]));
+		document.getElementById("menu3").src=getPNG(getID(menuCards[2]));
 		document.getElementById("menu1").style.opacity=1;
 		document.getElementById("menu2").style.opacity=1;	
 		document.getElementById("menu3").style.opacity=1;	
@@ -178,7 +210,7 @@ function choosePreferenceCOM(){
 		updateXYZ(deckCards[deckCount-i], 1, 1);
 	}
 	deckCount -= 5;
-	document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
+	document.getElementById("imgPref2").src=getPNG(getID(prefCards[1][currentPage2]));
 }
 
 function getOperationCOM(op1){
@@ -245,8 +277,8 @@ function handleOp(op, p){
 			}
 			prefCards[p][Math.floor(op/10)-1] = newp;
 			updateXYZ(newp, p, 1);
-			document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
-			document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
+			document.getElementById("imgPref1").src=getPNG(getID(prefCards[0][currentPage1]));
+			document.getElementById("imgPref2").src=getPNG(getID(prefCards[1][currentPage2]));
 			showCount(p);
 		}
 	document.getElementById("menu" + (op%10)).style.opacity="0.5";
@@ -259,7 +291,7 @@ function dealPlayerHand(){
 		updateXYZ(deckCards[deckCount-i], 0, 1);
 	}
 	deckCount -= 5;
-	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
+	document.getElementById("imgPref1").src=getPNG(getID(prefCards[0][currentPage1]));
 }
 
 function setup(){
@@ -272,7 +304,7 @@ function onPrev1Clicked(){
 		alert("已经是第一张！");
 	} else {
 		currentPage1--;
-		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
+		document.getElementById("imgPref1").src=getPNG(getID(prefCards[0][currentPage1]));
 	}
 }
 
@@ -281,7 +313,7 @@ function onNext1Clicked(){
 		alert("已经是最后一张！");
 	} else {
 		currentPage1++;
-		document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
+		document.getElementById("imgPref1").src=getPNG(getID(prefCards[0][currentPage1]));
 	}
 }
 
@@ -290,7 +322,7 @@ function onPrev2Clicked(){
 		alert("已经是第一张！");
 	} else {
 		currentPage2--;
-		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
+		document.getElementById("imgPref2").src=getPNG(getID(prefCards[1][currentPage2]));
 	}
 }
 
@@ -299,7 +331,7 @@ function onNext2Clicked(){
 		alert("已经是最后一张！");
 	} else {
 		currentPage2++;
-		document.getElementById("imgPref2").src=getID(prefCards[1][currentPage2]) + ".PNG";
+		document.getElementById("imgPref2").src=getPNG(getID(prefCards[1][currentPage2]));
 	}
 }
 
@@ -318,7 +350,7 @@ function onAbandonClicked(){
 	if(currentPage1>=prefCount[0]){
 		currentPage1--;
 	}
-	document.getElementById("imgPref1").src=getID(prefCards[0][currentPage1]) + ".PNG";
+	document.getElementById("imgPref1").src=getPNG(getID(prefCards[0][currentPage1]));
 }
 
 function onConfirmClicked(){
